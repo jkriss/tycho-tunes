@@ -1,0 +1,11 @@
+{
+  "name": "tycho-tunes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Jesse Kriss <jesse@jklabs.net>",
+  "dependencies": {
+    "hidstream": "^2.1.0"
+  }
+}
