@@ -48,7 +48,19 @@ module.exports = function(opts) {
     player.play(songFile)
     var ended = false
     player.removeAllListeners()
-    player.once('end', cb)
+
+    if (path.match(/-loop\.mp3/)) {
+      player.on('frame', function(data) {
+        // if we're on the last frame, seek to the beginning
+        // console.log(data)
+        if (data[1] === '0') {
+          // console.log("looping...")
+          player._cmd("JUMP", 0)
+        }
+      })
+    } else {
+      player.once('end', cb)
+    }
   }
 
   return {
