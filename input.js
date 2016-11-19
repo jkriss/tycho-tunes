@@ -26,13 +26,19 @@ module.exports = function(opts, listener) {
     // console.log("typed:", char)
     buffer += char
     if (debounce) clearTimeout(debounce)
-    debounce = setTimeout(send, 500)
+    debounce = setTimeout(send, 200)
   }
 
   // if it's been quiet for 500 ms, send the buffer
   function send() {
     listener(buffer)
     buffer = ""
+  }
+
+  return {
+    close : function() {
+      device.close()
+    }
   }
 
 }
