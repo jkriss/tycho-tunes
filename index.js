@@ -27,7 +27,7 @@ var specialIds = {
   },
   '0' : function() {
     console.log("exiting...")
-    if (player) player.stop()
+    if (player) player.close()
     input.close()
     process.exit()
   }

@@ -1,45 +1,24 @@
-var Speaker = require('speaker')
-var fs = require('fs')
-var lame = require('lame')
-var Volume = require("pcm-volume")
-
-function getSpeaker() {
-  return new Speaker({
-    channels: 2,          // 2 channels
-    bitDepth: 16,         // 16-bit samples
-    sampleRate: 44100     // 44,100 Hz sample rate
-  });
-}
-
-// TODO write a stream fader
+var Mpg = require('mpg123')
+var Path = require('path')
 
 module.exports = function(opts) {
 
-  var volume, speaker, mp3Stream, decoder
-  var paused = false
+  var player
   var songs = []
 
   function stop() {
-    volume.setVolume(0.2)
-    setTimeout(function() {
-      volume.setVolume(0)
-    }, 20)
-    if (speaker) speaker.close()
+    if (player) {
+      player.stop()
+      player.close()
+    }
   }
 
   function pause() {
-    if (!mp3Stream) return
-    if (paused) {
-      console.log("unpausing?")
-      volume.pipe(speaker)
-      decoder.resume()
-      paused = false
-    } else {
-      console.log("pausing?")
-      decoder.pause()
-      volume.unpipe()
-      paused = true
-    }
+    if (player) player.pause()
+  }
+
+  function close() {
+    if (player) player.close()
   }
 
   var nowPlaying = 0
@@ -58,32 +37,27 @@ module.exports = function(opts) {
 
   function playFiles(paths, cb) {
     songs = paths
+    nowPlaying = 0
     playFile(songs[nowPlaying], function() { playNext(cb) })
   }
 
   function playFile(path, cb) {
-    // console.log(path);
-    if (speaker) speaker.close()
-    if (mp3Stream) mp3Stream.close()
-    volume = new Volume()
-    speaker = getSpeaker();
-    if (cb) speaker.on('close', cb);
-    mp3Stream = fs.createReadStream(path)
-    decoder = new lame.Decoder()
-    mp3Stream.on('data', function(data) {
-      // displayData(this, data, cb);
-    })
-    .pipe(decoder)
-    .pipe(volume)
-    .pipe(speaker);
+    var songFile = Path.resolve(path)
+    console.log("playing", songFile)
+    if (!player) player = new Mpg()
+    player.play(songFile)
+    var ended = false
+    player.removeAllListeners()
+    player.once('end', cb)
   }
 
   return {
     playFile : playFile,
     playFiles : playFiles,
     stop : stop,
+    close : close,
     pause : pause,
     next : playNext,
-    previous : playPrevious
+    previous : playPrevious,
   }
 }
