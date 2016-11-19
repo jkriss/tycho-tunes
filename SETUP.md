@@ -46,3 +46,11 @@ We need a more recent node.js, build tools, and some native libraries for mp3 pl
     sudo ln -s /usr/bin/nodejs /usr/bin/node
 
     sudo apt-get install -y mpg123 libusb-1.0-0-dev
+
+## To run stuff on boot, forever
+
+    sudo crontab -u root -e
+
+Then edit that file to include the following line:
+
+    @reboot cd /home/chip && ./node_modules/.bin/forever start -c /usr/bin/node index.js
