@@ -3,7 +3,8 @@ var playlist = require('./playlist')()
 var Path = require('path')
 var Player = require('./player')
 
-var input = Input({ vid : 2303, pid : 9 }, handleId)
+var input = Input({ vid : 65535, pid : 53 }, handleId)
+// var input = Input({ vid : 2303, pid : 9 }, handleId)
 // var input = Input({ path : 'IOService:/AppleACPIPlatformExpert/PCI0@0/AppleACPIPCI/SPI1@15,4/AppleIntelLpssGspi@1/AppleIntelLpssSpiController@1/AppleIntelLpssSpiDevice@0/AppleHSSPIController/Apple Internal Keyboard / Trackpad/Keyboard / Boot/AppleHSSPIHIDDriver' }, handleId)
 
 var libraryRoot = './library/'
