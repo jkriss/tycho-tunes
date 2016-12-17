@@ -4,7 +4,7 @@ var HID = require('node-hid')
 module.exports = function(opts, listener) {
 
   var devices = HID.devices()
-  console.log("devices:", devices)
+  // console.log("devices:", devices)
 
   // var device = new hid.device({ parser : hid.parser.keyboard, path : opts.path })
   var device = new hid.device({ parser : hid.parser.newline, path : opts.path, vid : opts.vid, pid : opts.pid })
