@@ -1,4 +1,4 @@
-var Mpg = require('mpg123')
+var mpg = require('mpg123')
 var Path = require('path')
 
 module.exports = function(opts) {
@@ -44,7 +44,7 @@ module.exports = function(opts) {
   function playFile(path, cb) {
     var songFile = Path.resolve(path)
     console.log("playing", songFile)
-    if (!player) player = new Mpg()
+    if (!player) player = new mpg.MpgPlayer()
     player.play(songFile)
     var ended = false
     player.removeAllListeners()
